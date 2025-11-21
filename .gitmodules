@@ -1,3 +1,6 @@
 [submodule "hip-templates"]
 	path = hip-templates
 	url = git@github.com:SKyletoft/hip-templates.git
+[submodule "fmt"]
+	path = fmt
+	url = git@github.com:fmtlib/fmt.git
