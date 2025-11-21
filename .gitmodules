@@ -1,0 +1,3 @@
+[submodule "hip-templates"]
+	path = hip-templates
+	url = git@github.com:SKyletoft/hip-templates.git
