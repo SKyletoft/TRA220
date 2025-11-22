@@ -1,25 +1,17 @@
-#include "gpu.hpp"
+#include "poisson.hpp"
 
 #include <fmt/base.h>
 #include <fmt/ranges.h>
 
-#include <span>
-#include <vector>
-
-__global__ void set_index(gpu::device_span<int> mem) {
-	mem[threadIdx.x] = (int) (threadIdx.x);
-}
+#include <stdexcept>
 
 auto main() -> int {
-	std::vector<int> v{};
-	v.resize(12uz);
-	gpu::device_unique_ptr<int> p{12uz};
-	gpu::device_memset(p, 0);
-
-	set_index<<<1, 12>>>(p);
-
-	gpu::copy_to_host(std::span{v}, p);
-
-	fmt::println("Hello world!\n");
-	fmt::println("{}\n", v);
+	try {
+		// What does any of this mean? Who knows
+		auto res = poisson(50, 50, 100, 0, 2, 0, 1);
+		fmt::println("{}\n", res);
+	}
+	catch (std::runtime_error e) {
+		fmt::println("Uncaught exception: {}", e.what());
+	}
 }
