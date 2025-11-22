@@ -5,3 +5,4 @@ result
 build/
 .cache/
 src/Makefile
+compile_commands.json
