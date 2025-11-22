@@ -19,9 +19,15 @@
 					nativeBuildInputs = with pkgs; [
 						custom-python
 						pyright
-						gnumake
+						ninja
+						cmake
+						clang-tools
 					];
-					HIPCC = "/opt/rocm/hip/bin/hipcc";
+					shellHook = ''
+						export HIPCC=/opt/rocm/hip/bin/hipcc
+						export CC=/opt/rocm/hip/bin/hipcc
+						export CXX=/opt/rocm/hip/bin/hipcc
+					'';
 				};
 			}
 		);
