@@ -4,3 +4,4 @@ result
 *.a
 build/
 .cache/
+src/Makefile
