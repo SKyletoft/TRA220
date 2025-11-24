@@ -13,6 +13,7 @@
 				custom-python = pkgs.python312.withPackages(p: with p; [
 					matplotlib
 					numpy
+					plotly
 				]);
 			in {
 				devShells.default = pkgs.mkShell {
@@ -22,6 +23,8 @@
 						ninja
 						cmake
 						clang-tools
+						difftastic
+						gnuplot
 					];
 					shellHook = ''
 						export HIPCC=/opt/rocm/hip/bin/hipcc
