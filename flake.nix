@@ -13,6 +13,8 @@
 				custom-python = pkgs.python312.withPackages(p: with p; [
 					matplotlib
 					numpy
+					scipy
+					pyamg
 					plotly
 				]);
 			in {
@@ -25,6 +27,7 @@
 						clang-tools
 						difftastic
 						gnuplot
+						futhark
 					];
 					shellHook = ''
 						export HIPCC=/opt/rocm/hip/bin/hipcc
