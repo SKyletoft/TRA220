@@ -2,6 +2,7 @@ result
 .envrc
 *.o
 *.a
+ogl-2d/Main
 build/
 .cache/
 src/Makefile

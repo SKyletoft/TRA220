@@ -61,6 +61,9 @@ bool Window::run_event_loop() {
 		if (e.type == SDL_QUIT) {
 			running = false;
 		}
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == 'q') {
+			running = false;
+		}
 		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
 			running = false;
 		}

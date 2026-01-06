@@ -29,7 +29,7 @@ std::string get_shader_info_log(GLuint obj) {
 
 	if(log_length > 0)
 	{
-		tmp_log = new char[log_length];
+		tmp_log = new char[(size_t) log_length];
 		glGetShaderInfoLog(obj, log_length, &chars_written, tmp_log);
 		log = tmp_log;
 		delete[] tmp_log;
@@ -58,8 +58,6 @@ ComputeContext::ComputeContext() {
 	std::string fs_src = {
 		#embed "fragment.glsl"
 	};
-
-	std::println("{}", __LINE__);
 
 	const char *vs = vs_src.c_str();
 	const char *fs = fs_src.c_str();
@@ -93,6 +91,7 @@ ComputeContext::ComputeContext() {
 	GLint linkOk = 0;
 	glGetProgramiv(shader_program, GL_LINK_STATUS, &linkOk);
 	if (!linkOk) {
+		std::println("{}", get_shader_info_log(shader_program));
 		throw std::runtime_error("Failed to link shaders");
 	}
 }
@@ -113,6 +112,14 @@ void ComputeContext::compute() {
 		glGetUniformLocation(this->shader_program, "triangle_colour"),
 		1,
 		std::array<float, 3>{1.0f, 1.0f, 1.0f}.data()
+	);
+	glUniform1i(
+		glGetUniformLocation(this->shader_program, "height"),
+		500
+	);
+	glUniform1i(
+		glGetUniformLocation(this->shader_program, "width"),
+		500
 	);
 
 	glBindVertexArray(this->vertex_array_object);

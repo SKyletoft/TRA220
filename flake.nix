@@ -9,7 +9,7 @@
 	outputs = { self, nixpkgs, flake-utils }:
 		flake-utils.lib.eachDefaultSystem(system:
 			let
-				pkgs = nixpkgs.legacyPackages.${system};
+				pkgs = import nixpkgs { inherit system; };
 				custom-python = pkgs.python312.withPackages(p: with p; [
 					matplotlib
 					numpy
@@ -23,11 +23,17 @@
 						custom-python
 						pyright
 						ninja
+						mold
 						cmake
 						clang-tools
 						difftastic
 						gnuplot
 						futhark
+						libglvnd
+						SDL2
+						glew
+						bear
+						gcc15
 					];
 					shellHook = ''
 						export HIPCC=/opt/rocm/hip/bin/hipcc
