@@ -1,8 +1,3 @@
-def linspace (min: f32) (max: f32) (n: i64): [n]f32 =
-  let fract = (max - min) / f32.i64 (n - 1)
-  let f x = f32.i64 x * fract + min
-  in iota n |> map f
-
 def iteration [n] [m] (pd: [n][m]f32) (b: [n][m]f32) (dx2: f32) (dy2: f32): [n][m]f32 =
   let per_square (x: i64) (y: i64) =
     if x == 0 || x >= n - 1 || y == 0 || y >= m - 1
@@ -20,4 +15,5 @@ def calc (nx: i64) (ny: i64) (nt: i64) (x_min: f32) (x_max: f32) (y_min: f32) (y
   in loop acc = copy p for _i < nt do
       iteration acc b dx2 dy2
 
-entry main = calc 50 50 100 0.0 2.0 0.0 1.0
+entry main =
+  calc 50 50 100 0.0 2.0 0.0 1.0

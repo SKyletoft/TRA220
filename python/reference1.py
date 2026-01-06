@@ -64,6 +64,9 @@ def plot2D(x, y, p):
 
 # plot2D(x, y, p)
 
-for row in p:
-    for column in row:
-        print(f"{column:.5e}")
+print(f"{ny}\t{nx}\t0")
+for j in range(ny):
+    row = p[j]
+    for i in range(nx):
+        column = row[i]
+        print(f"{i} {j} {column:.5e}")
