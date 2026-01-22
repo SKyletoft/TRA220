@@ -3,9 +3,11 @@
 I want to present something other than performance numbers, I want to
 discuss history and ergonomics.
 
+# Graphics hacks
+
 Originally graphics cards were very much fixed function hardware. They
 were designed to do one kind of calculation and that was to produce
-pretty images.  The oldest graphics could do lines but more commonly
+pretty images. The oldest graphics could do lines but more commonly
 had hardware accelerated text rendering, so you could draw 80x25
 characters to a screen. Then we got tiled backgrounds and sprites, but
 current graphics started in the 90s with fixed function 3D pipelines.
@@ -18,9 +20,57 @@ on the meshes per pixel per frame and with that we unlocked the first
 GPGPU hack.
 
 What if we just render a single rectangle that covers the entire
-screen and embed other information in the colour?  This is exactly
-what they started doing and it's exactly what I've done here.  I took
-the first lab from the computer graphics course and replaced the
-output rainbow with a single iteration of the poisson solver.
+screen and embed other information in the colour? This is exactly what
+they started doing and it's exactly what I've done here. I took the
+first lab from the computer graphics course and replaced the output
+rainbow with a single iteration of the poisson solver.
 
-This is a massive pain.
+This is a massive pain. There is a bunch of boiler plate in passing
+data back and forth. It's been made easier since 2004, but originally
+all data you wanted to pass to the GPU had to either be small
+constants or encoded as textures so you lost all your type
+information. Texture reads are also often smoothed out unless you're
+careful so you could easily mess up and lose precise information if
+you set (or forgot to set) the correct texture sampler.
+
+GLSL is also a dedicated language, so you can't really share code with
+the host. HLSL is a thing on Windows and consoles but I'm entirely
+unfamiliar with it beyond the fact that it exists.
+
+But what benefits do you get? How much parallelisation do you get out
+of it? The GPU will render the entire image in parallel, pixel by
+pixel, generally tiled where tile sizes vary from 8x8 to 32x32, but
+this is all hidden and doesn't matter for GPGPU when you render a
+single rectangle with the same shader.
+
+# HIP
+
+Next I want to quickly talk about raw HIP, AMD's dialect of CUDA. I'm
+sure many groups here have turned to raw CUDA. And as you either know
+or are blissfully ignorant of, its a massive pain. We don't have to
+think about mixed languages or compiling our shaders and sharing data
+can now be done with raw memory you can treat in any way you like.
+
+We do however get more control over how our programs are dispatched to
+the GPU. We're limited by blocksizes, sure, but we don't just get to
+set the output texture size. And we can even do 3D now. Technically we
+can do 3D textures with the previous technique too, but we couldn't
+back when it was the "normal" way of doing things, that came much
+later.
+
+But the provided type system is extremely flawed and too limited to be
+of any use in catching incorrect programs. The main issue here is
+still, as I ranted about at the half time presentations, the complete
+lack of separation between host and device pointers.
+
+# Futhark
+
+So what's the future? This is still very much active research and
+honestly, just leaving the hard parts to experts with CUDA is probably
+more likely to just stay, but we can do better in theory.
+
+I've been playing with a language called Futhark. It's a danish
+research project from DIKU, the compsci department at the University
+of Copenhagen.
+
+It's a purely functional ML dialect that targets the more native GPU languages.
