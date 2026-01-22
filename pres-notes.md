@@ -69,8 +69,29 @@ So what's the future? This is still very much active research and
 honestly, just leaving the hard parts to experts with CUDA is probably
 more likely to just stay, but we can do better in theory.
 
-I've been playing with a language called Futhark. It's a danish
+I've been playing with a language called Futhark. It's a Danish
 research project from DIKU, the compsci department at the University
 of Copenhagen.
 
-It's a purely functional ML dialect that targets the more native GPU languages.
+It's a purely functional ML dialect that targets the more native GPU
+languages. Functional in the functional programming sense, meaning
+competent and logically sound type systems, no side effects and no
+mutation. A bit weird to get used to but much, much nicer than
+imperative code once you get the hang of it.
+
+Functional programs are usually built with higher order functions such
+as map or reduce.  Map is the function that takes a function to
+transform an element to another and an array to apply it to while
+reduce takes an operation to merge two elements and an array to merge.
+As you cannot have any side effects you can run all of this in an as
+parallel a fashion as possible, and that it the goal of futhark,
+letting the compiler find the parallelism for you and collapse nested
+parallelism as flatly as possible.
+
+I'm not showing any numbers as I realised this morning that I'd made a
+major mistake in creating 2D arrays over and over again and I haven't
+setup the language bindings to run it without a harness to read and
+write to stdio so it's entirely incomparable, but the official
+benchmark suite shows that generally outperforms naïvely written CUDA
+but doesn't hold a candle to professionally massively optimised
+kernels.
