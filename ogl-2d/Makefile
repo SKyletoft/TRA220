@@ -34,6 +34,9 @@ OBJ := $(SRC:.cpp=.o)
 run: Main
 	./Main
 
+claude: claude.cpp
+	g++ -O3 -std=c++26 `sdl2-config --cflags --libs` -lGL -lGLEW claude.cpp -o claude
+
 Main: $(OBJ)
 	$(CXX) $^ -o $@ `sdl2-config --cflags --libs` -lGL -lGLEW
 
@@ -44,4 +47,4 @@ compute.o: compute.cpp $(INC) $(wildcard *.glsl)
 
 .PHONY: clean
 clean:
-	rm -f $(OBJ) Main
+	rm -f $(OBJ) Main claude
