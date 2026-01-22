@@ -7,17 +7,14 @@ discuss history and ergonomics.
 
 Originally graphics cards were very much fixed function hardware. They
 were designed to do one kind of calculation and that was to produce
-pretty images. The oldest graphics could do lines but more commonly
-had hardware accelerated text rendering, so you could draw 80x25
-characters to a screen. Then we got tiled backgrounds and sprites, but
-current graphics started in the 90s with fixed function 3D pipelines.
+pretty images.
 
-We could send 3D models and textures to the GPU and setup a could of
-values for fixed lighting models and that worked fine enough, but as
-graphics became more advanced we needed to run custom code on it, so
-in 2002 shaders were introduced. This allowed us to generate colours
-on the meshes per pixel per frame and with that we unlocked the first
-GPGPU hack.
+In the 90s we could send 3D models and textures to the GPU and setup a
+bunch of values for fixed lighting models and that worked fine enough,
+but as graphics became more advanced we needed to run custom code on
+it, so in 2002 shaders were introduced. This allowed us to generate
+colours on the meshes per pixel per frame and with that we unlocked
+the first GPGPU hack.
 
 What if we just render a single rectangle that covers the entire
 screen and embed other information in the colour? This is exactly what
@@ -25,17 +22,13 @@ they started doing and it's exactly what I've done here. I took the
 first lab from the computer graphics course and replaced the output
 rainbow with a single iteration of the poisson solver.
 
-This is a massive pain. There is a bunch of boiler plate in passing
+This is a massive pain. There is a bunch of boilerplate in passing
 data back and forth. It's been made easier since 2004, but originally
 all data you wanted to pass to the GPU had to either be small
 constants or encoded as textures so you lost all your type
 information. Texture reads are also often smoothed out unless you're
 careful so you could easily mess up and lose precise information if
 you set (or forgot to set) the correct texture sampler.
-
-GLSL is also a dedicated language, so you can't really share code with
-the host. HLSL is a thing on Windows and consoles but I'm entirely
-unfamiliar with it beyond the fact that it exists.
 
 But what benefits do you get? How much parallelisation do you get out
 of it? The GPU will render the entire image in parallel, pixel by
@@ -62,6 +55,11 @@ But the provided type system is extremely flawed and too limited to be
 of any use in catching incorrect programs. The main issue here is
 still, as I ranted about at the half time presentations, the complete
 lack of separation between host and device pointers.
+
+Sure, this is entirely solvable with thin wrappers around arrays,
+slices and pointers where the `operator*()` is marked as `__device__`.
+I did this and it massively helped my code, but that doesn't help the
+ecosystem at large.
 
 # Futhark
 
